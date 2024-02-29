@@ -5,10 +5,12 @@ services:
     volumes:
       - ./.docker-compose/db:/data/db
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_ROOT_USERNAME: $MONGO_USERNAME
+      MONGO_INITDB_ROOT_PASSWORD: $MONGO_PASSWORD
+      MONGO_INITDB_DATABASE: $MONGO_DATABASE
     ports:
-      - ${MONGO_PORT}:27017
+      - $MONGO_PORT:27017
+
   app_dev:
     container_name: server_dev
     build:
@@ -18,4 +20,6 @@ services:
     volumes:
       - .:/app/server
     ports:
-      - ${APP_PORT}:${APP_PORT}
+      - $APP_PORT:$APP_PORT
+    depends_on:
+      - db
