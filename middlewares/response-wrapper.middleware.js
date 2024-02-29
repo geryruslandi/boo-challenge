@@ -12,6 +12,12 @@ const responseWrapper = function (req, res, next) {
     })
   }
 
+  res.notValidated = (message = "please correct the input") => {
+    return res.status(422).json({
+      message
+    })
+  }
+
   next()
 }
 

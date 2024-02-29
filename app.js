@@ -9,6 +9,7 @@ const port = process.env.APP_PORT || 3000;
 app.use(express.json());
 app.use(responseWrapper);
 app.set('view engine', 'ejs');
+app.use(express.static('public/static'))
 app.use('/', require('./routes/profile')());
 app.use('*', (req, res) => res.notFound("Page not found"))
 
