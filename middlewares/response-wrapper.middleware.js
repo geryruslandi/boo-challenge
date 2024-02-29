@@ -12,9 +12,16 @@ const responseWrapper = function (req, res, next) {
     })
   }
 
-  res.notValidated = (message = "please correct the input") => {
-    return res.status(422).json({
+  res.error = (message, status) => {
+    return res.status(status).json({
       message
+    })
+  }
+
+  res.validationError = (errors) => {
+    const firstError = errors.array()[0]
+    return res.status(422).json({
+      message: `${firstError.path} has ${firstError.msg}`
     })
   }
 
