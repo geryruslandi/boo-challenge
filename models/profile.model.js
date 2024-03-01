@@ -50,9 +50,13 @@ const profileSchema = new mongoose.Schema({
     zodiac: { type: String, required: true },
     comment: { type: String, required: true },
     likes: { type: Number, default: 0 },
-    usersLike: [{
+    users_like: [{
       userId: { type: mongoose.Schema.Types.ObjectId, required: true }
-    }]
+    }],
+    created_at: {
+      type: mongoose.Schema.Types.Date,
+      default: () => Date.now()
+    }
   }]
 })
 

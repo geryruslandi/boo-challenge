@@ -56,11 +56,11 @@ const sortValue = {
   RECENT: 'recent',
 }
 
-const sortField = {
+const filterField = {
   MBTI: 'mbti',
   ENNEAGRAM: 'enneagram',
   ZODIAC: 'zodiac',
-  ALL: 'all'
+  NONE: 'none'
 }
 
 module.exports = {
@@ -68,5 +68,5 @@ module.exports = {
   enneagram,
   zodiac,
   sortValue,
-  sortField,
+  filterField,
 }

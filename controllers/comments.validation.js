@@ -1,10 +1,11 @@
-const { param, body } = require("express-validator")
-const { mbti, enneagram, zodiac, sortValue, sortField } = require("../enums/common.enum")
+const { param, body, query } = require("express-validator")
+const { mbti, enneagram, zodiac, sortValue, filterField } = require("../enums/common.enum")
+const { default: mongoose } = require("mongoose")
 
 const postCommentValidation = [
   param('profileId').custom((value) => {
     if (!value.match(/^[0-9a-fA-F]{24}$/)) {
-      throw Error("id is incorrect")
+      throw Error("invalid profile id")
     }
     return true
   }),
@@ -16,12 +17,40 @@ const postCommentValidation = [
 ]
 
 const getCommentsValidation = [
-  body('sort_field')
-    .isIn(Object.values(sortField))
-    .default(sortField.ALL),
-  body('sort_value')
-    .isIn(Object.values(sortValue))
-    .default(sortValue.RECENT),
+  query('filter_field')
+    .default(filterField.NONE)
+    .isIn(Object.values(filterField)),
+  query('filter_value')
+    .custom((value, { req }) => {
+      switch (req.query.filter_field) {
+        case filterField.ENNEAGRAM:
+          if (Object.values(enneagram).includes(value)) {
+            return true
+          }
+          throw Error("invalid enneagram value")
+        case filterField.MBTI:
+          if (Object.values(mbti).includes(value)) {
+            return true
+          }
+          throw Error("invalid mbti value")
+        case filterField.ZODIAC:
+          if (Object.values(zodiac).includes(value)) {
+            return true
+          }
+          throw Error("invalid mbti value")
+        default:
+          return true
+      }
+    }),
+  query('sort')
+    .default(sortValue.RECENT)
+    .isIn(Object.values(sortValue)),
+  param('profileId').custom((value) => {
+    if (!value.match(/^[0-9a-fA-F]{24}$/)) {
+      throw Error("invalid profile id")
+    }
+    return true
+  }).customSanitizer(value => new mongoose.Types.ObjectId(value)),
 ]
 
 module.exports = { postCommentValidation, getCommentsValidation }
