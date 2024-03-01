@@ -18,6 +18,7 @@ const postComment = [
     }
 
     profile.comments.push({
+      creator_id: req.user._id,
       title: req.body.title,
       mbti: req.body.mbti,
       enneagram: req.body.enneagram,
@@ -34,7 +35,7 @@ const postComment = [
 const getComments = [
   ...getCommentsValidation,
   async (req, res) => {
-
+    const { sort_field, sort_value } = req.body
   }
 ]
 

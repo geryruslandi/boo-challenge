@@ -43,14 +43,19 @@ const profileSchema = new mongoose.Schema({
     required: true,
   },
   comments: [{
-    title: String,
-    mbti: String,
-    enneagram: String,
-    zodiac: String,
-    comment: String,
+    creator_id: { type: mongoose.Schema.Types.ObjectId, required: true },
+    title: { type: String, required: true },
+    mbti: { type: String, required: true },
+    enneagram: { type: String, required: true },
+    zodiac: { type: String, required: true },
+    comment: { type: String, required: true },
+    likes: { type: Number, default: 0 },
+    usersLike: [{
+      userId: { type: mongoose.Schema.Types.ObjectId, required: true }
+    }]
   }]
 })
 
-const ProfileModel = mongoose.model('profile', profileSchema)
+const ProfileModel = mongoose.model('profiles', profileSchema)
 
 module.exports = { ProfileModel }

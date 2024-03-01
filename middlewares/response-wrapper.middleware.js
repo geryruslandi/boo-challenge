@@ -1,4 +1,4 @@
-const responseWrapper = function (req, res, next) {
+const responseWrapper = (req, res, next) => {
   res.ok = (data, message = "success",) => {
     return res.status(200).json({
       message,
@@ -22,6 +22,12 @@ const responseWrapper = function (req, res, next) {
     const firstError = errors.array()[0]
     return res.status(422).json({
       message: `${firstError.path} has ${firstError.msg}`
+    })
+  }
+
+  res.unauthorized = (message = "unauthorized") => {
+    return res.status(401).json({
+      message
     })
   }
 
