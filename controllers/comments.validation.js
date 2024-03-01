@@ -4,7 +4,7 @@ const { default: mongoose } = require("mongoose")
 
 const postCommentValidation = [
   param('profileId').custom((value) => {
-    if (!value.match(/^[0-9a-fA-F]{24}$/)) {
+    if (!mongoose.Types.ObjectId.isValid(value)) {
       throw Error("invalid profile id")
     }
     return true
@@ -46,26 +46,32 @@ const getCommentsValidation = [
     .default(sortValue.RECENT)
     .isIn(Object.values(sortValue)),
   param('profileId').custom((value) => {
-    if (!value.match(/^[0-9a-fA-F]{24}$/)) {
+    if (!mongoose.Types.ObjectId.isValid(value)) {
       throw Error("invalid profile id")
     }
     return true
-  }).customSanitizer(value => new mongoose.Types.ObjectId(value)),
+  }).customSanitizer(value => {
+    return mongoose.Types.ObjectId.isValid(value) ? new mongoose.Types.ObjectId(value) : value
+  }),
 ]
 
 const toggleLikeValidation = [
   param('profileId').custom((value) => {
-    if (!value.match(/^[0-9a-fA-F]{24}$/)) {
+    if (!mongoose.Types.ObjectId.isValid(value)) {
       throw Error("invalid profile id")
     }
     return true
-  }).customSanitizer(value => new mongoose.Types.ObjectId(value)),
+  }).customSanitizer(value => {
+    return mongoose.Types.ObjectId.isValid(value) ? new mongoose.Types.ObjectId(value) : value
+  }),
   param('commentId').custom((value) => {
-    if (!value.match(/^[0-9a-fA-F]{24}$/)) {
+    if (!mongoose.Types.ObjectId.isValid(value)) {
       throw Error("invalid comment id")
     }
     return true
-  }).customSanitizer(value => new mongoose.Types.ObjectId(value)),
+  }).customSanitizer(value => {
+    return mongoose.Types.ObjectId.isValid(value) ? new mongoose.Types.ObjectId(value) : value
+  }),
 ]
 
 module.exports = { postCommentValidation, getCommentsValidation, toggleLikeValidation }
