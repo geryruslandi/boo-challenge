@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator");
 const { ProfileModel } = require("../models/profile.model");
-const { postCommentValidation, getCommentsValidation } = require("./comments.validation");
+const { postCommentValidation, getCommentsValidation, toggleLikeValidation } = require("./comments.validation");
 const { filterField, sortValue } = require("../enums/common.enum");
 
 const postComment = [
@@ -108,4 +108,79 @@ const getComments = [
   }
 ]
 
-module.exports = { postComment, getComments }
+const toggleLike = [
+  ...toggleLikeValidation,
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.validationError(errors);
+    }
+
+    const { profileId, commentId } = req.params
+
+    const profileExist = await ProfileModel.exists({
+      _id: profileId
+    })
+
+    if (!profileExist) {
+      return res.error("profile not found", 422)
+    }
+
+    const comment = (
+      await ProfileModel.aggregate([
+        {
+          $match: { _id: profileId }
+        },
+        {
+          $project: {
+            comments: {
+              $filter: {
+                input: '$comments',
+                as: 'comment',
+                cond: {
+                  $eq: [`$\$comment._id`, commentId]
+                }
+              }
+            }
+          },
+        },
+      ])
+    )[0].comments[0]
+
+    const usersLike = comment.users_like
+    let finalUsersLike = usersLike
+    let finalUsersLikeCount = comment.likes
+
+    const userLikeIndex = usersLike.findIndex(item => {
+      return item.user_id.equals(req.user._id)
+    })
+
+    if (userLikeIndex == -1) {
+      finalUsersLikeCount++
+      finalUsersLike.push({
+        user_id: req.user._id
+      })
+    } else {
+      finalUsersLikeCount--
+      finalUsersLike.splice(userLikeIndex, 1)
+    }
+
+    await ProfileModel.updateOne(
+      {
+        _id: profileId,
+        'comments._id': commentId,
+      },
+      {
+        $set: {
+          'comments.$.users_like': finalUsersLike,
+          'comments.$.likes': finalUsersLikeCount,
+        },
+      }
+    )
+
+    res.ok()
+  }
+]
+
+module.exports = { postComment, getComments, toggleLike }

@@ -53,4 +53,19 @@ const getCommentsValidation = [
   }).customSanitizer(value => new mongoose.Types.ObjectId(value)),
 ]
 
-module.exports = { postCommentValidation, getCommentsValidation }
+const toggleLikeValidation = [
+  param('profileId').custom((value) => {
+    if (!value.match(/^[0-9a-fA-F]{24}$/)) {
+      throw Error("invalid profile id")
+    }
+    return true
+  }).customSanitizer(value => new mongoose.Types.ObjectId(value)),
+  param('commentId').custom((value) => {
+    if (!value.match(/^[0-9a-fA-F]{24}$/)) {
+      throw Error("invalid comment id")
+    }
+    return true
+  }).customSanitizer(value => new mongoose.Types.ObjectId(value)),
+]
+
+module.exports = { postCommentValidation, getCommentsValidation, toggleLikeValidation }

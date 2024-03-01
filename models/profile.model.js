@@ -51,7 +51,7 @@ const profileSchema = new mongoose.Schema({
     comment: { type: String, required: true },
     likes: { type: Number, default: 0 },
     users_like: [{
-      userId: { type: mongoose.Schema.Types.ObjectId, required: true }
+      user_id: { type: mongoose.Schema.Types.ObjectId, required: true }
     }],
     created_at: {
       type: mongoose.Schema.Types.Date,
