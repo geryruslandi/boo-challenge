@@ -2,15 +2,40 @@ POST http://localhost:3000/
 Content-Type: application/json
 
 {
-  "name": "A Martinez",
-  "description": "Adolph Larrue Martinez III.",
+  "name": "Gery",
+  "description": "BOO gery's profile",
   "mbti": "ISFJ",
-  "enneagram": "9w3",
+  "enneagram": "1w2",
   "variant": "sp/so",
   "tritype": 725,
   "socionics": "SEE",
   "sloan": "RCOEN",
   "psyche": "FEVL",
-  "image": "https://soulverse.boo.world/images/1.png"
+  "image": "https://soulverse.boo.world/images/1.png",
+  "temperaments": "Phelgmatic"
 }
+###
+POST http://localhost:3000/65e174c2669bd00b93c554a3/comments
+Content-Type: application/json
+Authorization: Gery
+
+{
+  "title": "titles 3",
+  "zodiac": "Aries",
+  "mbti": "INFJ",
+  "enneagram": "2w3",
+  "comment": "test comment 3"
+}
+###
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "name": "Gery 3"
+}
+###
+GET http://localhost:3000/65e174c2669bd00b93c554a3/comments
+###
+POST http://localhost:3000/65e174c2669bd00b93c554a3/comments/65e174cf669bd00b93c554a7/toggle-like
+Authorization: Gery
 ###
