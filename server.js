@@ -1,6 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-const { initDb } = require('./models');
 const { responseWrapper } = require('./middlewares/response-wrapper.middleware');
 const { appRoute } = require('./routes');
 
@@ -11,7 +10,5 @@ server.use(responseWrapper);
 server.set('view engine', 'ejs');
 server.use(express.static('public/static'))
 server.use(appRoute)
-
-initDb().then(() => console.log('Database connected'))
 
 module.exports = { server }
