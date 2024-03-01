@@ -23,3 +23,11 @@ services:
       - $APP_PORT:$APP_PORT
     depends_on:
       - db
+
+  app_test:
+    container_name: server_test
+    build:
+      context: ./
+      dockerfile: ./docker/app/Dockerfile
+      target: runnerDev
+    command: npm test

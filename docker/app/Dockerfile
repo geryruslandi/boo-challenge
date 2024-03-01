@@ -1,5 +1,5 @@
 ##### DEVELOPMENT STAGES #####
-FROM node:18-alpine as runnerDev
+FROM node:18-buster as runnerDev
 
 WORKDIR /app/server
 
