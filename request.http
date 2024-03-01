@@ -1,3 +1,10 @@
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "name": "Gery"
+}
+###
 POST http://localhost:3000/
 Content-Type: application/json
 
@@ -15,7 +22,7 @@ Content-Type: application/json
   "temperaments": "Phelgmatic"
 }
 ###
-POST http://localhost:3000/65e174c2669bd00b93c554a3/comments
+POST http://localhost:3000/65e1fae1aa818a7dc7753512/comments
 Content-Type: application/json
 Authorization: Gery
 
@@ -27,15 +34,8 @@ Authorization: Gery
   "comment": "test comment 3"
 }
 ###
-POST http://localhost:3000/auth/register
-Content-Type: application/json
-
-{
-  "name": "Gery 3"
-}
+GET http://localhost:3000/65e1fae1aa818a7dc7753512/comments?sort=best&filter_field=mbti&filter_value=INFJ
 ###
-GET http://localhost:3000/65e174c2669bd00b93c554a3/comments
-###
-POST http://localhost:3000/65e174c2669bd00b93c554a3/comments/65e174cf669bd00b93c554a7/toggle-like
+POST http://localhost:3000/65e1fae1aa818a7dc7753512/comments/65e1fb0843f483e728986eb8/toggle-like
 Authorization: Gery
 ###

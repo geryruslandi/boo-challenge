@@ -16,7 +16,7 @@ const postComment = [
         return res.validationError(errors);
       }
 
-      const profile = postCommentService(req.params.profileId, req.body, req.user)
+      const profile = await postCommentService(req.params.profileId, req.body, req.user)
 
       res.ok(profile)
     }
@@ -52,19 +52,21 @@ const getComments = [
 
 const toggleLike = [
   ...toggleLikeValidation,
-  async (req, res) => {
-    const errors = validationResult(req);
+  asyncHandler(
+    async (req, res) => {
+      const errors = validationResult(req);
 
-    if (!errors.isEmpty()) {
-      return res.validationError(errors);
+      if (!errors.isEmpty()) {
+        return res.validationError(errors);
+      }
+
+      const { profileId, commentId } = req.params
+
+      await toggleLikeService(profileId, commentId, req.user)
+
+      res.ok()
     }
-
-    const { profileId, commentId } = req.params
-
-    await toggleLikeService(profileId, commentId, req.user)
-
-    res.ok()
-  }
+  ),
 ]
 
 module.exports = { postComment, getComments, toggleLike }
